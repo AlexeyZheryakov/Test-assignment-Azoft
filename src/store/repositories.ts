@@ -1,18 +1,15 @@
 import { makeAutoObservable } from "mobx"
-
-interface Repositories {
-    
-}
+import { IRepository } from "../Api/types"
 
 class Repositories {
-    repositories = []
+    repositories:Array<IRepository> = []
 
     constructor() {
         makeAutoObservable(this)
     }
 
-    addRepositories(repos:any) {
-        this.repositories.push()
+    addRepositories(repos:Array<IRepository>) {
+        this.repositories = repos
     }
 }
 

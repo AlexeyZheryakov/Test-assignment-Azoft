@@ -8,13 +8,13 @@ items: Array<IRepository>;
 total_count: number;
 }
 
-interface IRepository {
+export interface IRepository {
 id: number;
 name: string;
 stargazers_count: number;
 url: string;
 owner: IOwner;
-description: string;
+description: string | null;
 contributors_url: string;
 }
 
