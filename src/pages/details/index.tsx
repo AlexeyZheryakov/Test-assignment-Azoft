@@ -4,7 +4,7 @@ const Details: React.FC = () => {
   return (
     <>
         <div>
-            <p>Main</p>
+            <p>Details</p>
         </div>
     </>
   );

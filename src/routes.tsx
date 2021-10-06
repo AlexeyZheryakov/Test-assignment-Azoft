@@ -1,5 +1,5 @@
 const routes = {
-  main: () => `/main`,
+  main: () => `/`,
   details: () => `/details`,
 };
 
