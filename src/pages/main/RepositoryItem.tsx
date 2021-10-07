@@ -4,7 +4,7 @@ import { IRepository } from '../../Api/types';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
 import { format } from 'date-fns';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import routes from '../../routes'
 
 interface IRepositoryItem {
@@ -21,7 +21,7 @@ const RepositoryItem: React.FC<IRepositoryItem> = ({repository}) => {
         </Typography>
       </Link>
       <Typography component = "a" href = { repository.html_url }>
-        Ссылка на репозиторий: {repository.name}
+        Repository link: {repository.name}
       </Typography>
       <Typography>
         Stargazers count: {repository.stargazers_count}
