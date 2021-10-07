@@ -1,10 +1,12 @@
 import React from "react";
 import axios from 'axios';
-import { IResponse, Languages } from "./types";
+import { IData, Languages } from "./types";
 
 
 const Api = {
-    getRepositories: () => axios.get<IResponse>('https://api.github.com/search/repositories?per_page=10&page=1&q=Beer-market'),
+    getRepositories: (search: string, page: number) => axios.get<IData>(
+        `https://api.github.com/search/repositories?per_page=10&page=${page}&sort=stars&q=${search}`
+    ),
     getLanguages: (url: string) => axios.get<Languages>(url),
 };
   
