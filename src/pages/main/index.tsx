@@ -6,7 +6,8 @@ import './styles.scss';
 import RepositoryItem from './RepositoryItem';
 import SearchForm from './SearchForm';
 import Pagination from '@mui/material/Pagination';
-import { Redirect, useParams } from 'react-router-dom';
+import PaginationItem from '@mui/material/PaginationItem';
+import { Redirect, useParams, Link } from 'react-router-dom';
 import routes from '../../routes';
 
 
@@ -36,6 +37,13 @@ const Main: React.FC = observer(() => {
           ))}
           {repos.totalCount > pageLimit && <Pagination
             onChange = {(e, page) => repos.changePageNumber(page)}
+            renderItem={(item) => (
+              <PaginationItem
+                component={Link}
+                to={routes.mainWithCategory(category, String(item.page))}
+                {...item}
+              />
+            )}
             page = {repos.pageNumber}
             count = {paginationCount}
             shape="rounded"
