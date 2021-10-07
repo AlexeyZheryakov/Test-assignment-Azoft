@@ -7,47 +7,53 @@ import RepositoryItem from './RepositoryItem';
 import SearchForm from './SearchForm';
 import Pagination from '@mui/material/Pagination';
 import PaginationItem from '@mui/material/PaginationItem';
-import { Redirect, useParams, Link } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import routes from '../../routes';
+import Typography from '@mui/material/Typography';
 
+export interface IParams {
+  category?: string,
+  page?: string
+}
 
 const Main: React.FC = observer(() => {
   const pageLimit = 10
   const paginationCount = Math.ceil(repos.totalCount / pageLimit)
-  const { category, page } = useParams<{ category: string, page: string }>();
-  const lang = Api.getLanguages('https://api.github.com/repos/fabrice126/BeerMarket/languages').then((res) => res)
+  const { category, page = 1 } = useParams<IParams>();
+  // const lang = Api.getLanguages('https://api.github.com/repos/fabrice126/BeerMarket/languages').then((res) => res)
   React.useEffect(() => {
     if(category) {
       Api.getRepositories(category, +page)
         .then((res) => {
           repos.addRepositories(res.data.items)
           repos.addTotalCount(res.data.total_count)
-          console.log(res);
-          
-        }).catch((e) => console.log(e));
-      repos.changePageNumber(+page)
+        }).catch((e) => repos.addError(e.response.data.message) );
     }
   }, [category, page]);
   return (
     <>
       <div className = 'container'>
           <SearchForm/>
+          {repos.error && (
+            <Typography className = 'error' component="div" variant="h5">
+              Error: {repos.error}
+            </Typography>
+          )}
           {repos.repositories.map((item) => (
             <RepositoryItem key = {item.id} repository = {item}/>
           ))}
-          {repos.totalCount > pageLimit && <Pagination
-            onChange = {(e, page) => repos.changePageNumber(page)}
-            renderItem={(item) => (
-              <PaginationItem
-                component={Link}
-                to={routes.mainWithCategory(category, String(item.page))}
-                {...item}
-              />
-            )}
-            page = {repos.pageNumber}
-            count = {paginationCount}
-            shape="rounded"
-          />}
+          {repos.totalCount > pageLimit && (
+            <Pagination
+              renderItem={(item) => (
+                <Link className = 'repo-item-link' to={routes.mainWithCategory(category, String(item.page))}>
+                  <PaginationItem{...item}/>
+                </Link>
+              )}
+              page = {+page}
+              count = {paginationCount}
+              shape="rounded"
+            />
+          )}
       </div>
     </>
   );

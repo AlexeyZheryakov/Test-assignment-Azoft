@@ -2,14 +2,14 @@ import React from 'react';
 import './styles.scss';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import Api from '../../Api';
-import repos from '../../store';
 import { Link, useParams } from 'react-router-dom';
-import routes from '../../routes'
+import routes from '../../routes';
+import { IParams } from '.';
 
 
 const SearchForm: React.FC = () => {
     const [search, setSearch] = React.useState('');
+    const { page = '1' } = useParams<IParams>()
   return (
     <div className = 'search-form'>
         <TextField
@@ -19,7 +19,7 @@ const SearchForm: React.FC = () => {
             label = "Enter the name of the repository"
             onChange = {((e) => setSearch(e.target.value))}
         />
-        <Link className = 'repo-item-link' to={routes.mainWithCategory(search, String(repos.pageNumber))}>
+        <Link className = 'repo-item-link' to={routes.mainWithCategory(search, page)}>
           <Button size="large" variant="text">search</Button>
         </Link>
     </div>

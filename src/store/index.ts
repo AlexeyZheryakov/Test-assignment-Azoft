@@ -4,7 +4,7 @@ import { IRepository } from "../Api/types"
 class Repos {
     repositories:Array<IRepository> = []
     totalCount: number = 0
-    pageNumber: number = 1
+    error: string = ''
 
     constructor() {
         makeAutoObservable(this)
@@ -18,8 +18,8 @@ class Repos {
         this.totalCount = count
     }
 
-    changePageNumber(pageNumber: number) {
-        this.pageNumber = pageNumber
+    addError(error: string) {
+        this.error = error
     }
 }
 
