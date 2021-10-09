@@ -8,8 +8,9 @@ import { IParams } from '.';
 
 
 const SearchForm: React.FC = () => {
+    const apiPageLimit = 100;
     const [search, setSearch] = React.useState('');
-    const { page = '1' } = useParams<IParams>()
+    const { page = '1' } = useParams<IParams>();
   return (
     <div className = 'search-form'>
         <TextField
@@ -19,7 +20,10 @@ const SearchForm: React.FC = () => {
             label = "Enter the name of the repository"
             onChange = {((e) => setSearch(e.target.value))}
         />
-        <Link className = 'repo-item-link' to={routes.mainWithCategory(search, page)}>
+        <Link
+          className = 'repo-item-link'
+          to={+page > apiPageLimit ? routes.mainWithCategory(search, '1') : routes.mainWithCategory(search, page)}
+        >
           <Button size="large" variant="text">search</Button>
         </Link>
     </div>

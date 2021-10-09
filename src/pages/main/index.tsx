@@ -39,21 +39,23 @@ const Main: React.FC = observer(() => {
               Error: {repos.error}
             </Typography>
           )}
-          {repos.repositories.map((item) => (
-            <RepositoryItem key = {item.id} repository = {item}/>
-          ))}
-          {repos.totalCount > pageLimit && (
-            <Pagination
-              renderItem={(item) => (
-                <Link className = 'repo-item-link' to={routes.mainWithCategory(category, String(item.page))}>
-                  <PaginationItem{...item}/>
-                </Link>
-              )}
-              page = {+page}
-              count = {paginationCount}
-              shape="rounded"
-            />
-          )}
+          {!repos.error && (<div>
+            {repos.repositories.map((repository) => (
+              <RepositoryItem key = {repository.id} repository = {repository}/>
+            ))}
+            {repos.totalCount > pageLimit && (
+              <Pagination
+                renderItem={(item) => (
+                  <Link className = 'repo-item-link' to={routes.mainWithCategory(category, String(item.page))}>
+                    <PaginationItem{...item}/>
+                  </Link>
+                )}
+                page = {+page}
+                count = {paginationCount}
+                shape="rounded"
+              />
+            )}
+          </div>)}
       </div>
     </>
   );

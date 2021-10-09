@@ -15,7 +15,7 @@ const RepositoryItem: React.FC<IRepositoryItem> = ({repository}) => {
   const formatedDate = format(new Date(repository.updated_at), 'dd-MM-yyyy');
   return (
     <Card sx={{ m: 1, p: 1 }}>
-      <Link className = 'repo-item-link' to={routes.details(String(repository.id))}>
+      <Link className = 'repo-item-link' to={routes.details(repository.owner.login, repository.name)}>
         <Typography component="div" variant="h6">
           {repository.name}
         </Typography>
