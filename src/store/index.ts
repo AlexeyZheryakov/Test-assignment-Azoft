@@ -9,7 +9,8 @@ export const initialRepository:IRepository = {
     owner: {avatar_url: '', login: '', html_url: ''},
     description: '',
     contributors_url: '',
-    updated_at: ''
+    updated_at: '',
+    languages_url: ''
 }
 
 class Repos {
@@ -17,7 +18,6 @@ class Repos {
     repository:IRepository = initialRepository
     totalCount: number = 0
     error: string = ''
-    isLoading = false
 
     constructor() {
         makeAutoObservable(this)
@@ -41,9 +41,6 @@ class Repos {
         this.error = error
     }
 
-    changeIsLoading(isLoading: boolean) {
-        this.isLoading = isLoading
-    }
 }
 
 export default new Repos()

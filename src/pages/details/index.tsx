@@ -9,6 +9,7 @@ import CardMedia from '@mui/material/CardMedia';
 import Box from '@mui/material/Box';
 import { observer } from 'mobx-react-lite';
 import { initialRepository } from '../../store';
+import { format } from 'date-fns';
 
 interface IParams {
   owner: string;
@@ -17,11 +18,24 @@ interface IParams {
 
 const Details: React.FC = observer(() => {
   const [languages, setLanguages] = React.useState<Array<string>>([])
+  const [contributors, setContributors] = React.useState<any>([])
   const { owner, repo } = useParams<IParams>()
+  const formatedDate = (date: string) => format(new Date(date), 'dd-MM-yyyy');
   React.useEffect(() => {
-    repos.changeIsLoading(true)
-    Api.getRepository(owner, repo).then((res) => {repos.addRepository(res.data); repos.changeIsLoading(false); console.log(res)})
-    Api.getLanguages('https://api.github.com/repos/fabrice126/BeerMarket/languages').then((res) => setLanguages(Object.keys(res.data)))
+    ( async () => {
+      await Api.getRepository(owner, repo).then((res) => {repos.addRepository(res.data); console.log("Response:", res)})
+      Api.getLanguages(repos.repository.languages_url).then((res) => setLanguages(Object.keys(res.data)))
+      Api.getContributors(repos.repository.contributors_url).then((res) => {
+        if(res.data) {
+          const tenFirstContributors = res.data.splice(0, 10)
+        console.log('contrebutors', tenFirstContributors);
+        setContributors(tenFirstContributors)
+        } else {
+          setContributors([])
+        }
+      })
+    })()
+    
     return () => {
       repos.addRepository(initialRepository)
     }
@@ -31,7 +45,7 @@ const Details: React.FC = observer(() => {
   return (
     <>
       {repos.repository.name && (<div className='container'>
-        <Card sx={{ m: 1, p: 1, display: 'flex', flexDirection: 'column' }}>
+        <Card sx={{ m: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
           <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1}}>
             <Typography component="div" variant="h5">
               {repos.repository.name}
@@ -40,7 +54,7 @@ const Details: React.FC = observer(() => {
               Stars: {repos.repository.stargazers_count}
             </Typography>
           </Box>
-          <Box sx={{ display: 'flex', height: '150px' }}>
+          <Box sx={{ display: 'flex', height: '150px', pb: 3 }}>
             <Box sx={{ flex: '0 0 150px', mr: 1}}>
               <CardMedia
                 component="img"
@@ -50,13 +64,30 @@ const Details: React.FC = observer(() => {
               />
             </Box>
             <Typography sx={{ width: '100%', overflowY: 'auto', overflowX: 'hidden'  }}  component="div" variant="h6">
+              Description:
+              <br/>
               {repos.repository.description ?? 'No description'}
             </Typography>
           </Box>
+          <Box sx={{ display: 'flex', justifyContent: 'space-between'}}>
+            <Typography component="div" variant="h6">
+              Languages: {languages.join(', ') || 'Information is absent'}
+            </Typography>
+            <Typography component="div" variant="h6">
+              Last commit : {formatedDate(repos.repository.updated_at)}
+            </Typography>
+          </Box>
           <Box>
-            {languages.map((language, i) => (
-              <div key={repos.repository.id + i}>{language}</div>
-            ))}
+            <Typography component="div" variant="h6">
+              <span>Contributors: </span>
+              {contributors.length ? contributors.map((contributor: any, index: number) => {
+                if(index < contributors.length - 1) {
+                  return (<span key={contributor.id}>{contributor.login}, </span>)
+                } else {
+                  return (<span key={contributor.id}>{contributor.login} </span>)
+                }
+              }) : <span>Information is absent</span>}
+            </Typography>
           </Box>
         </Card>
       </div>)}

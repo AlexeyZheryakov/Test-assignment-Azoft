@@ -13,12 +13,18 @@ export interface IRepository {
     description: string | null;
     contributors_url: string;
     updated_at: string;
+    languages_url: string;
 }
 
 interface IOwner {
     avatar_url: string;
     login: string;
     html_url: string;
+}
+
+export interface IContributor {
+    login: string;
+    id: number;
 }
 
 export type Languages = Record<string, string>
