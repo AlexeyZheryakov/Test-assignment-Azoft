@@ -20,7 +20,6 @@ const Main: React.FC = observer(() => {
   const pageLimit = 10
   const paginationCount = Math.ceil(repos.totalCount / pageLimit)
   const { category, page = 1 } = useParams<IParams>();
-  // const lang = Api.getLanguages('https://api.github.com/repos/fabrice126/BeerMarket/languages').then((res) => res)
   React.useEffect(() => {
     if(category) {
       Api.getRepositories(category, +page)

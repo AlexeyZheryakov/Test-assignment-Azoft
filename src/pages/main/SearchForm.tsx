@@ -2,15 +2,13 @@ import React from 'react';
 import './styles.scss';
 import TextField from '@mui/material/TextField';
 import Button from '@mui/material/Button';
-import { Link, useParams } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import routes from '../../routes';
-import { IParams } from '.';
 
 
 const SearchForm: React.FC = () => {
-    const apiPageLimit = 100;
     const [search, setSearch] = React.useState('');
-    const { page = '1' } = useParams<IParams>();
+    const pageNumber = '1';
   return (
     <div className = 'search-form'>
         <TextField
@@ -22,7 +20,7 @@ const SearchForm: React.FC = () => {
         />
         <Link
           className = 'repo-item-link'
-          to={+page > apiPageLimit ? routes.mainWithCategory(search, '1') : routes.mainWithCategory(search, page)}
+          to={routes.mainWithCategory(search, pageNumber)}
         >
           <Button size="large" variant="text">search</Button>
         </Link>
