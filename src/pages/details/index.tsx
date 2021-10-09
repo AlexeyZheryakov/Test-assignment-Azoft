@@ -3,13 +3,13 @@ import { useParams } from 'react-router';
 import Api from '../../Api';
 import Card from '@mui/material/Card';
 import Typography from '@mui/material/Typography';
-import './styles.scss';
-import repos from '../../store';
 import CardMedia from '@mui/material/CardMedia';
 import Box from '@mui/material/Box';
+import './styles.scss';
+import repos, { initialRepository } from '../../store';
 import { observer } from 'mobx-react-lite';
-import { initialRepository } from '../../store';
 import { format } from 'date-fns';
+import { IContributor } from '../../Api/types'
 
 interface IParams {
   owner: string;
@@ -18,7 +18,7 @@ interface IParams {
 
 const Details: React.FC = observer(() => {
   const [languages, setLanguages] = React.useState<Array<string>>([])
-  const [contributors, setContributors] = React.useState<any>([])
+  const [contributors, setContributors] = React.useState<Array<IContributor>>([])
   const { owner, repo } = useParams<IParams>()
   const formatedDate = (date: string) => format(new Date(date), 'dd-MM-yyyy');
   React.useEffect(() => {

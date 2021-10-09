@@ -19,15 +19,15 @@ const RepositoryItem: React.FC<IRepositoryItem> = ({repository}) => {
         <Typography component="div" variant="h6">
           {repository.name}
         </Typography>
+        <Typography>
+          Stargazers count: {repository.stargazers_count}
+        </Typography>
+        <Typography>
+          Last commit: {formatedDate}
+        </Typography>
       </Link>
       <Typography component = "a" href = { repository.html_url }>
         Repository link: {repository.name}
-      </Typography>
-      <Typography>
-        Stargazers count: {repository.stargazers_count}
-      </Typography>
-      <Typography>
-        Last commit: {formatedDate}
       </Typography>
     </Card>
   );

@@ -9,6 +9,7 @@ import routes from '../../routes';
 const SearchForm: React.FC = () => {
     const [search, setSearch] = React.useState('');
     const pageNumber = '1';
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setSearch(e.target.value)
   return (
     <div className = 'search-form'>
         <TextField
@@ -16,7 +17,7 @@ const SearchForm: React.FC = () => {
             id = "input-search-form"
             variant = "outlined"
             label = "Enter the name of the repository"
-            onChange = {((e) => setSearch(e.target.value))}
+            onChange = {handleChange}
         />
         <Link
           className = 'repo-item-link'
