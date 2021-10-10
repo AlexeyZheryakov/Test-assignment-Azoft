@@ -1,5 +1,5 @@
 import React from 'react';
-import Api from '../../Api';
+import RepositoriesApi from '../../Api/Repositories.';
 import { observer } from 'mobx-react-lite';
 import repos from '../../store';
 import './styles.scss';
@@ -22,7 +22,7 @@ const Main: React.FC = observer(() => {
   const { category, page = 1 } = useParams<IParams>();
   React.useEffect(() => {
     if(category) {
-      Api.getRepositories(category, +page)
+      RepositoriesApi.getRepositories(category, +page)
         .then((res) => {
           repos.addRepositories(res.data.items)
           repos.addTotalCount(res.data.total_count)
