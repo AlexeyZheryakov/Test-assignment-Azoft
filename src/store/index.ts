@@ -1,46 +1,48 @@
-import { makeAutoObservable } from "mobx"
-import { IRepository } from "../Api/types"
+import { makeAutoObservable } from 'mobx';
+import { IRepository } from '../Api/types';
 
-export const initialRepository:IRepository = {
-    id: 0,
-    name: '',
-    stargazers_count: 0,
-    html_url: '',
-    owner: {avatar_url: '', login: '', html_url: ''},
-    description: '',
-    contributors_url: '',
-    updated_at: '',
-    languages_url: ''
-}
+export const initialRepository: IRepository = {
+  id: 0,
+  name: '',
+  stargazers_count: 0,
+  html_url: '',
+  owner: { avatar_url: '', login: '', html_url: '' },
+  description: '',
+  contributors_url: '',
+  updated_at: '',
+  languages_url: '',
+};
 
 class Repos {
-    repositories:Array<IRepository> = []
-    repository:IRepository = initialRepository
-    totalCount: number = 0
-    error: string = ''
+  repositories: Array<IRepository> = [];
 
-    constructor() {
-        makeAutoObservable(this)
-    }
+  repository: IRepository = initialRepository;
 
-    addRepositories(repos: Array<IRepository>) {
-        this.repositories = repos
-        this.error = ''
-    }
+  totalCount: number = 0;
 
-    addRepository(repos: IRepository) {
-        this.repository = repos
-        this.error = ''
-    }
+  error: string = '';
 
-    addTotalCount(count: number) {
-        this.totalCount = count
-    }
+  constructor() {
+    makeAutoObservable(this);
+  }
 
-    addError(error: string) {
-        this.error = error
-    }
+  addRepositories(repos: Array<IRepository>) {
+    this.repositories = repos;
+    this.error = '';
+  }
 
+  addRepository(repos: IRepository) {
+    this.repository = repos;
+    this.error = '';
+  }
+
+  addTotalCount(count: number) {
+    this.totalCount = count;
+  }
+
+  addError(error: string) {
+    this.error = error;
+  }
 }
 
-export default new Repos()
+export default new Repos();
