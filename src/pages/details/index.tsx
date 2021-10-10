@@ -7,23 +7,18 @@ import CardMedia from '@mui/material/CardMedia';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Box from '@mui/material/Box';
 import Link from '@mui/material/Link';
-import './styles.scss';
+import '../styles.scss';
 import repos, { initialRepository } from '../../store';
 import { observer } from 'mobx-react-lite';
 import { format } from 'date-fns';
 import { IContributor } from '../../Api/types';
 import routes from '../../routes';
-export interface IParams {
-  owner: string;
-  repo: string;
-  category: string;
-  page: string;
-}
+import { IParams } from '../types';
 
 const Details: React.FC = observer(() => {
   const [languages, setLanguages] = React.useState<Array<string>>([]);
   const [contributors, setContributors] = React.useState<Array<IContributor>>([]);
-  const { owner, repo, category, page } = useParams<IParams>();
+  const { owner = '', repo = '', category, page } = useParams<IParams>();
   const formatedDate = (date: string) => format(new Date(date), 'dd-MM-yyyy');
   React.useEffect(() => {
     RepositoriesApi.getRepository(owner, repo).then((repositoryResponse) => {
@@ -51,7 +46,7 @@ const Details: React.FC = observer(() => {
     <>
       {repos.repository.name && (
         <div className="container">
-          <Card sx={{ m: 1, p: 3, display: 'flex', flexDirection: 'column' }}>
+          <Card sx={{ m: 1, p: 3, display: 'flex', flexDirection: 'column', width: '80%' }}>
             <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 1 }}>
               <Breadcrumbs>
                 <Link variant="h5" underline="hover" color="inherit" href={routes.mainWithCategory(category, page)}>
@@ -66,13 +61,16 @@ const Details: React.FC = observer(() => {
               </Typography>
             </Box>
             <Box sx={{ display: 'flex', height: '150px', pb: 3 }}>
-              <Box sx={{ flex: '0 0 150px', mr: 2 }}>
-                <CardMedia
-                  component="img"
-                  sx={{ width: '100%', height: '100%' }}
-                  image={repos.repository.owner.avatar_url}
-                  alt="Live from space album cover"
-                />
+              <Box sx={{ flex: '0 0 150px', mr: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                {repos.repository.owner.avatar_url ? (
+                  <CardMedia
+                    component="img"
+                    sx={{ width: '100%', height: '100%' }}
+                    image={repos.repository.owner.avatar_url}
+                  />
+                ) : (
+                  <Link href={repos.repository.owner.html_url}>{repos.repository.owner.login}</Link>
+                )}
               </Box>
               <Typography sx={{ width: '100%', overflowY: 'auto', overflowX: 'hidden' }} component="div" variant="h6">
                 Description:
@@ -84,7 +82,7 @@ const Details: React.FC = observer(() => {
               <Typography component="div" variant="h6">
                 Languages: {languages.join(', ') || 'Information is absent'}
               </Typography>
-              <Typography component="div" variant="h6">
+              <Typography sx={{ flex: '0 0 auto' }} component="div" variant="h6">
                 Last commit : {formatedDate(repos.repository.updated_at)}
               </Typography>
             </Box>

@@ -2,7 +2,7 @@ import React from 'react';
 import RepositoriesApi from '../../Api/Repositories.';
 import { observer } from 'mobx-react-lite';
 import repos from '../../store';
-import './styles.scss';
+import '../styles.scss';
 import RepositoryItem from './RepositoryItem';
 import Box from '@mui/material/Box';
 import SearchForm from './SearchForm';
@@ -11,13 +11,10 @@ import PaginationItem from '@mui/material/PaginationItem';
 import { useParams, Link } from 'react-router-dom';
 import routes from '../../routes';
 import Typography from '@mui/material/Typography';
-
-export interface IParams {
-  category?: string;
-  page?: string;
-}
+import { IParams } from '../types';
 
 const Main: React.FC = observer(() => {
+  window.scroll(0, 0);
   const pageLimit = 10;
   const paginationCount = Math.ceil(repos.totalCount / pageLimit);
   const { category, page = 1 } = useParams<IParams>();
@@ -40,27 +37,27 @@ const Main: React.FC = observer(() => {
             Error: {repos.error}
           </Typography>
         )}
-        <Box width="1000px">
+        <Box width="60%">
           {!repos.error && (
             <div>
               {repos.repositories.map((repository) => (
                 <RepositoryItem key={repository.id} repository={repository} />
               ))}
+              <Box sx={{ display: 'flex', justifyContent: 'center', p: 5 }}>
+                {repos.totalCount > pageLimit && (
+                  <Pagination
+                    renderItem={(item) => (
+                      <Link className="repo-item-link" to={routes.mainWithCategory(category, String(item.page))}>
+                        <PaginationItem {...item} />
+                      </Link>
+                    )}
+                    page={+page}
+                    count={paginationCount}
+                    shape="rounded"
+                  />
+                )}
+              </Box>
             </div>
-          )}
-        </Box>
-        <Box p={5}>
-          {repos.totalCount > pageLimit && (
-            <Pagination
-              renderItem={(item) => (
-                <Link className="repo-item-link" to={routes.mainWithCategory(category, String(item.page))}>
-                  <PaginationItem {...item} />
-                </Link>
-              )}
-              page={+page}
-              count={paginationCount}
-              shape="rounded"
-            />
           )}
         </Box>
       </div>
@@ -68,4 +65,4 @@ const Main: React.FC = observer(() => {
   );
 });
 
-export default Main;
+export default React.memo(Main);

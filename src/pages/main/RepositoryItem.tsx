@@ -1,5 +1,5 @@
 import React from 'react';
-import './styles.scss';
+import '../styles.scss';
 import { useParams } from 'react-router-dom';
 import { IRepository } from '../../Api/types';
 import Card from '@mui/material/Card';
@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 import { format } from 'date-fns';
 import { Link } from 'react-router-dom';
 import routes from '../../routes';
-import { IParams } from '../details';
+import { IParams } from '../types';
 
 interface IRepositoryItem {
   repository: IRepository;
@@ -32,4 +32,4 @@ const RepositoryItem: React.FC<IRepositoryItem> = ({ repository }) => {
   );
 };
 
-export default RepositoryItem;
+export default React.memo(RepositoryItem);
